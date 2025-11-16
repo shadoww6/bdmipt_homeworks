@@ -1,0 +1,46 @@
+Table product {
+  product_unique_id integer [primary key]
+  product_id integer
+  brand varchar
+  product_line varchar
+  product_class varchar
+  product_size varchar
+  list_price decimal(10,2)
+  standard_cost decimal(10,2)
+}
+
+Table address {
+address_id integer [primary key]
+address varchar
+postcode integer
+state varchar
+country varchar
+}
+
+Table customer {
+  customer_id integer [primary key]
+  first_name varchar
+  last_name varchar
+  gender varchar
+  DOB varchar
+  job_title varchar
+  job_industry_category varchar
+  wealth_segment varchar
+  deceased_indicator varchar
+  owns_car varchar
+  property_valuation integer
+  address_id integer
+}
+
+Table transaction {
+  transaction_id integer [primary key]
+  customer_id integer
+  product_unique_id integer
+  transaction_date varchar
+  online_order varchar
+  order_status varchar
+}
+
+Ref: transaction.customer_id > customer.customer_id
+Ref: transaction.product_unique_id > product.product_unique_id
+Ref: customer.address_id > address.address_id

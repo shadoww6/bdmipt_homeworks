@@ -1,0 +1,47 @@
+CREATE TABLE product (
+    product_unique_id INT PRIMARY KEY,
+    product_id INT NOT NULL,
+    brand VARCHAR(50),
+    product_line VARCHAR(50),
+    product_class VARCHAR(50),
+    product_size VARCHAR(50),
+    list_price DECIMAL(10,2),
+    standard_cost DECIMAL(10,2)
+);
+
+
+CREATE TABLE address (
+    address_id INT PRIMARY KEY,
+    address VARCHAR(255) NOT NULL,
+    postcode INT NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    country VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE customer (
+    customer_id INT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    gender VARCHAR(50),
+    DOB VARCHAR(50),
+    job_title VARCHAR(255),
+    job_industry_category VARCHAR(255),
+    wealth_segment VARCHAR(50),
+    deceased_indicator VARCHAR(1),
+    owns_car VARCHAR(3),
+    property_valuation INT,
+    address_id INT NOT NULL,
+    FOREIGN KEY (address_id) REFERENCES address(address_id)
+);
+
+CREATE TABLE transaction (
+    transaction_id INT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    product_unique_id INT NOT NULL,
+    transaction_date VARCHAR(500),
+    online_order VARCHAR(50),
+    order_status VARCHAR(50),
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+    FOREIGN KEY (product_unique_id) REFERENCES product(product_unique_id)
+);
+
