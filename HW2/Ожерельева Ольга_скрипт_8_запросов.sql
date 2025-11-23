@@ -127,7 +127,7 @@ select c.customer_id,
   having COUNT(distinct o.order_id) >= 3
          and SUM(oi.quantity * oi.item_list_price_at_sale) > 10000
     union
-    select c.customer_id,
+  select c.customer_id,
            c.first_name,
            c.last_name,
            c.job_industry_category
@@ -148,3 +148,4 @@ select c.customer_id,
 	 
 
  
+
