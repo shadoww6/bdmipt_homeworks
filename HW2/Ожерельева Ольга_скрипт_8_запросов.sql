@@ -121,29 +121,30 @@ select c.customer_id,
   join orders o on c.customer_id = o.customer_id
   join order_items oi on o.order_id = oi.order_id
   where c.job_industry_category = 'IT'
-    and o.order_status = 'Approved'
-    and o.order_date between '2017-01-01' and '2017-03-01'
+        and o.order_status = 'Approved'
+        and o.order_date between '2017-01-01' and '2017-03-01'
   group by c.customer_id, c.first_name, c.last_name, c.job_industry_category
   having COUNT(distinct o.order_id) >= 3
-    and SUM(oi.quantity * oi.item_list_price_at_sale) > 10000
+         and SUM(oi.quantity * oi.item_list_price_at_sale) > 10000
     union
     select c.customer_id,
-       c.first_name,
-       c.last_name,
-       c.job_industry_category
+           c.first_name,
+           c.last_name,
+           c.job_industry_category
   from customer c
   join orders o on c.customer_id = o.customer_id
   join order_items oi on o.order_id = oi.order_id
   where c.job_industry_category = 'Health'
-    and o.order_status = 'Approved'
-    and o.order_date between '2017-01-01' and '2017-03-01'
+        and o.order_status = 'Approved'
+        and o.order_date between '2017-01-01' and '2017-03-01'
   group by c.customer_id, c.first_name, c.last_name, c.job_industry_category
   having COUNT(distinct o.order_id) >= 3
-    and SUM(oi.quantity * oi.item_list_price_at_sale) > 10000;
+         and SUM(oi.quantity * oi.item_list_price_at_sale) > 10000;
 
 
 	   
 
 	  
 	 
+
  
