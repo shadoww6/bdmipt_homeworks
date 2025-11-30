@@ -1,10 +1,11 @@
+-- 1 запрос
 select job_industry_category,
 	   COUNT(*) as client_count
 from customer
 group by job_industry_category 
 order by client_count desc;
 
-
+-- 2 запрос
 select EXTRACT(YEAR FROM TO_DATE(o.order_date, 'YYYY-MM-DD')) AS year,
 	   extract(month from TO_DATE(o.order_date, 'YYYY-MM-DD')) as month,
 	   c.job_industry_category,
@@ -19,6 +20,7 @@ group by EXTRACT(YEAR FROM TO_DATE(o.order_date, 'YYYY-MM-DD')),
 	     c.job_industry_category
 order by year, month, c.job_industry_category;
 
+-- 3 запрос
 select p.brand,
 	   COUNt(distinct o.order_id) as online_orders_count
 from product_cor p
@@ -31,6 +33,7 @@ left join customer c on o.customer_id = c.customer_id
 group by p.brand 
 order by online_orders_count DESC, p.brand;
 
+-- 4 запрос через группировку
 select c.customer_id,
        c.first_name,
        c.last_name,
@@ -46,20 +49,22 @@ join product_cor p on oi.product_id = p.product_id
 group by c.customer_id, c.first_name, c.last_name
 order by total_revenue desc, orders_count DESC;
 
+-- 4 запрос через оконные
 select distinct c.customer_id,
        c.first_name,
        c.last_name,
        SUM(oi.quantity * p.list_price) over(partition by c.customer_id) as total_revenue,
        MAX(oi.quantity * p.list_price) over(partition by c.customer_id) as max_order,
-    MIN(oi.quantity * p.list_price) OVER(partition by c.customer_id) as min_order,
-    COUNT(o.order_id) OVER(partition by c.customer_id) as orders_count,
-    AVG(oi.quantity * p.list_price) OVER(partition by c.customer_id) as avg_order
+       MIN(oi.quantity * p.list_price) OVER(partition by c.customer_id) as min_order,
+       COUNT(o.order_id) OVER(partition by c.customer_id) as orders_count,
+       AVG(oi.quantity * p.list_price) OVER(partition by c.customer_id) as avg_order
 from customer c
 join orders o on c.customer_id = o.customer_id
 join order_items oi on o.order_id = oi.order_id
 join product_cor p on oi.product_id = p.product_id
 order by total_revenue desc, orders_count DESC;
 
+-- 5 запрос топ3 минимум
 select c.customer_id,
     c.first_name,
     c.last_name,
@@ -72,7 +77,7 @@ group by c.customer_id, c.first_name, c.last_name
 order by total_amount asc
 limit 3
 
-
+-- 5 запрос топ3 максимум
 select c.customer_id,
     c.first_name,
     c.last_name,
@@ -85,7 +90,7 @@ group by c.customer_id, c.first_name, c.last_name
 order by total_amount desc
 limit 3;
 
-
+-- 6 запрос
 select customer_id,
        first_name,
        last_name,
@@ -108,6 +113,8 @@ from (
 ) as numbered_transactions
 where transaction_num = 2;
 
+
+-- 7 запрос
 with order_intervals as (
     select c.customer_id,
         c.first_name,
@@ -131,6 +138,8 @@ group by customer_id, first_name, last_name, job_title
 having COUNT(*) > 1  -- исключаем клиентов, у которрых только один или меньше заказов
 order by max_interval_days DESC;
 
+
+-- 8 запрос
 with customer_revenue as (
     select c.first_name,
           c.last_name,
@@ -159,3 +168,4 @@ from ranked_customers
 where rank_in_segment <= 5
 order by wealth_segment, 
          rank_in_segment;
+
